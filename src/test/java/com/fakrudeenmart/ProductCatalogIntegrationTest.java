@@ -32,11 +32,11 @@ class ProductCatalogIntegrationTest {
             ProductService service = new ProductService(productDAO, categoryDAO, new com.fakrudeenmart.dao.UserDAO(dataSource));
 
             List<Category> categories = categoryDAO.findAll();
-            assertEquals(7, categories.size());
+            assertEquals(8, categories.size());
             PageResult<Product> all = productDAO.findAll(1, 12);
-            assertEquals(20, all.getTotalItems());
+            assertEquals(30, all.getTotalItems());
             assertEquals(12, all.getItems().size());
-            assertEquals(2, all.getTotalPages());
+            assertEquals(3, all.getTotalPages());
             assertTrue(all.getItems().stream().allMatch(product -> product.getStatus().name().equals("ACTIVE")));
             assertTrue(all.getItems().stream().allMatch(product -> product.getCategoryName() != null && product.getSellerName() != null));
 
@@ -59,8 +59,8 @@ class ProductCatalogIntegrationTest {
             }
 
             PageResult<Product> secondPage = productDAO.findAll(2, 12);
-            assertEquals(8, secondPage.getItems().size());
-            assertFalse(secondPage.isNextAvailable());
+            assertEquals(12, secondPage.getItems().size());
+            assertTrue(secondPage.isNextAvailable());
             assertTrue(secondPage.isPreviousAvailable());
         }
     }

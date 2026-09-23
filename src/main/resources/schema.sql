@@ -130,7 +130,8 @@ MERGE INTO categories (name, description) KEY(name) VALUES
 ('Books', 'Reading for learning and leisure'),
 ('Sports', 'Equipment for active lifestyles'),
 ('Beauty', 'Personal care and wellness'),
-('Accessories', 'Small details that make a difference');
+('Accessories', 'Small details that make a difference'),
+('Grocery', 'Thoughtful pantry staples and everyday essentials');
 
 MERGE INTO users (full_name, email, password_hash, role, status) KEY(email) VALUES
 ('Northstar Store', 'catalog-seller-1@fakrudeenmart.local', 'CATALOG_SEED_HASH', 'SELLER', 'ACTIVE'),
@@ -160,7 +161,18 @@ FROM (VALUES
  ('Vintage Camera Strap', 'Comfortable woven strap for everyday photography.', 1099.00, 2, 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=900', TRUE, 'ACTIVE', 23, 'Accessories'),
  ('Seasonal Running Jacket', 'Breathable lightweight layer for changing weather.', 3199.00, 0, 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=900', TRUE, 'ACTIVE', 24, 'Sports'),
  ('Archived Travel Guide', 'A previous edition retained for historical reference.', 299.00, 8, 'https://images.unsplash.com/photo-1521292270410-a8c4d716d518?w=900', FALSE, 'INACTIVE', 30, 'Books'),
- ('Discontinued Ceramic Mug', 'A retired colorway no longer offered publicly.', 499.00, 6, 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=900', FALSE, 'INACTIVE', 32, 'Home & Kitchen')
+ ('Discontinued Ceramic Mug', 'A retired colorway no longer offered publicly.', 499.00, 6, 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=900', FALSE, 'INACTIVE', 32, 'Home & Kitchen'),
+ ('Single-Origin Coffee Beans', 'Balanced medium roast beans for a bright, smooth cup.', 899.00, 14, 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900', TRUE, 'ACTIVE', 25, 'Grocery'),
+ ('Organic Green Tea', 'Delicate loose-leaf green tea for a calm daily ritual.', 549.00, 20, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900', TRUE, 'ACTIVE', 26, 'Grocery'),
+ ('Wildflower Honey', 'Small-batch honey with a floral finish and rich texture.', 649.00, 11, 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=900', TRUE, 'ACTIVE', 27, 'Grocery'),
+ ('Cold-Pressed Olive Oil', 'Extra virgin olive oil for dressings, cooking, and finishing.', 1199.00, 8, 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=900', TRUE, 'ACTIVE', 28, 'Grocery'),
+ ('Stoneground Peanut Butter', 'Creamy roasted peanuts with no unnecessary additives.', 449.00, 16, 'https://images.unsplash.com/photo-1621939514649-280e2aa2f6b2?w=900', TRUE, 'ACTIVE', 29, 'Grocery'),
+ ('Trail Running Socks', 'Breathable cushioned socks for long outdoor sessions.', 699.00, 13, 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=900', TRUE, 'ACTIVE', 31, 'Sports'),
+ ('Everyday Canvas Cap', 'Structured cotton cap with an adjustable back strap.', 599.00, 10, 'https://images.unsplash.com/photo-1521369909029-2afed882baee?w=900', TRUE, 'ACTIVE', 33, 'Fashion'),
+ ('Cedar Scented Candle', 'Warm cedar fragrance for a quiet evening at home.', 799.00, 9, 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=900', TRUE, 'ACTIVE', 34, 'Home & Kitchen'),
+ ('Archived Spice Set', 'A previous seasonal spice collection retained for reference.', 399.00, 5, 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=900', FALSE, 'INACTIVE', 35, 'Grocery'),
+ ('Travel First Aid Kit', 'Compact essentials for weekends away and everyday preparedness.', 999.00, 7, 'https://images.unsplash.com/photo-1603398938378-e54eab446adde?w=900', TRUE, 'ACTIVE', 36, 'Accessories'),
+ ('Artisan Pasta', 'Bronze-cut pasta made for rich sauces and relaxed dinners.', 349.00, 18, 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=900', TRUE, 'ACTIVE', 37, 'Grocery')
 ) AS v(name, description, price, stock_quantity, image_url, active, status, age_days, category_name)
 JOIN users u ON u.email = CASE WHEN MOD(LENGTH(v.name), 2) = 0 THEN 'catalog-seller-1@fakrudeenmart.local' ELSE 'catalog-seller-2@fakrudeenmart.local' END
 JOIN categories c ON c.name = v.category_name
