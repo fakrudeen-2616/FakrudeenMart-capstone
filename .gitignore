@@ -1,0 +1,16 @@
+# Maven build output
+target/
+
+# Local H2 database files
+*.mv.db
+*.trace.db
+
+# IDE and OS files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Local logs and temporary files
+*.log
+logs/

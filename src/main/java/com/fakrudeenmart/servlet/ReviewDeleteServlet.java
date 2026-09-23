@@ -1,0 +1,4 @@
+package com.fakrudeenmart.servlet;
+import com.fakrudeenmart.model.Review; import com.fakrudeenmart.service.ReviewService;
+import javax.servlet.http.*; import java.io.IOException;
+public class ReviewDeleteServlet extends HttpServlet { private ReviewService service; public void init(){service=new ReviewService();} protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException{try{Review review=service.getOwnedReview(ReviewServletSupport.userId(req),ReviewServletSupport.reviewId(req.getParameter("reviewId")));long productId=review.getProductId();service.deleteReview(ReviewServletSupport.userId(req),review.getId());resp.sendRedirect(ReviewServletSupport.productRedirect(req,productId,"reviewMessage","Your review has been deleted."));}catch(ReviewService.ReviewException e){resp.sendError(HttpServletResponse.SC_FORBIDDEN,e.getMessage());}}}

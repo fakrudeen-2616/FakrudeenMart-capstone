@@ -1,0 +1,4 @@
+package com.fakrudeenmart.servlet;
+import com.fakrudeenmart.model.Review; import com.fakrudeenmart.service.ReviewService;
+import javax.servlet.http.*; import java.io.IOException;
+public class ReviewUpdateServlet extends HttpServlet { private ReviewService service; public void init(){service=new ReviewService();} protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException{try{long id=ReviewServletSupport.reviewId(req.getParameter("reviewId"));Review review=service.updateReview(ReviewServletSupport.userId(req),id,ReviewServletSupport.rating(req.getParameter("rating")),req.getParameter("comment"));resp.sendRedirect(ReviewServletSupport.productRedirect(req,review.getProductId(),"reviewMessage","Your review has been updated."));}catch(ReviewService.ReviewException e){resp.sendError(HttpServletResponse.SC_FORBIDDEN,e.getMessage());}}}

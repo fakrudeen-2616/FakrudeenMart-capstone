@@ -1,0 +1,4 @@
+package com.fakrudeenmart.servlet;
+import com.fakrudeenmart.model.UserStatus; import com.fakrudeenmart.service.AdminService;
+import javax.servlet.http.*; import java.io.IOException;
+public class AdminUserStatusServlet extends HttpServlet { private AdminService service; public void init(){service=new AdminService();} protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException{try{long id=AdminServletSupport.id(req.getParameter("id"),"User was not found.");UserStatus status=UserStatus.valueOf(req.getParameter("status"));service.updateUserStatus(AdminServletSupport.adminId(req),id,status);String target=req.getParameter("target");resp.sendRedirect(req.getContextPath()+("SELLER".equals(target)?"/admin/sellers":"BUYER".equals(target)?"/admin/buyers":"/admin/users"));}catch(Exception e){resp.sendError(e instanceof AdminService.AdminException?HttpServletResponse.SC_FORBIDDEN:HttpServletResponse.SC_BAD_REQUEST);}}}
