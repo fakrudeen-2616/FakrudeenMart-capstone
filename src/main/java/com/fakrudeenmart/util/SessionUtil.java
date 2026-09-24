@@ -27,6 +27,15 @@ public final class SessionUtil {
         session.setAttribute(USER_ROLE, user.getRole().name());
     }
 
+    public static void refreshIdentity(HttpServletRequest request, User user) {
+        HttpSession session = request.getSession(false);
+        if (session == null || user == null) return;
+        session.setAttribute(USER_ID, user.getId());
+        session.setAttribute(USER_NAME, user.getFullName());
+        session.setAttribute(USER_EMAIL, user.getEmail());
+        session.setAttribute(USER_ROLE, user.getRole().name());
+    }
+
     public static boolean isLoggedIn(HttpServletRequest request) {
         return request.getSession(false) != null && getCurrentUserId(request) != null;
     }

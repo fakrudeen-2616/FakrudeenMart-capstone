@@ -16,7 +16,7 @@ class CartAuthorizationTest {
         HttpServletRequest request = mock(HttpServletRequest.class); HttpServletResponse response = mock(HttpServletResponse.class); FilterChain chain = mock(FilterChain.class);
         when(request.getContextPath()).thenReturn("/app"); when(request.getRequestURI()).thenReturn("/app/cart"); when(request.getSession(false)).thenReturn(null);
         new AuthenticationFilter().doFilter(request, response, chain);
-        verify(response).sendRedirect("/app/login"); verify(chain, never()).doFilter(request, response);
+        verify(response).sendRedirect("/app/buyer/login"); verify(chain, never()).doFilter(request, response);
     }
 
     @Test

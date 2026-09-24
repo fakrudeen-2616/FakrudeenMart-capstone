@@ -114,7 +114,7 @@ public class UserDAO {
             statement.setString(1, fullName);
             statement.setString(2, phone);
             statement.setLong(3, userId);
-            if (statement.executeUpdate() != 1) throw new DataAccessException("User was not found", null);
+            statement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error("Unable to update user profile", exception);
             throw new DataAccessException("Unable to update user profile", exception);

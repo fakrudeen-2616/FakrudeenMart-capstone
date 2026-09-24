@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/** Compatibility destination for existing buyer login links. */
+/** Buyer application home; the filter enforces the BUYER role before dispatch. */
 public class RoleHomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/");
+        request.getRequestDispatcher("/WEB-INF/views/buyer-home.jsp").forward(request, response);
     }
 }

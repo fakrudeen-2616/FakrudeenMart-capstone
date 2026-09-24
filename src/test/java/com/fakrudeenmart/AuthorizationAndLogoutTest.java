@@ -30,7 +30,7 @@ class AuthorizationAndLogoutTest {
         configurePath("/buyer/home");
         when(request.getSession(false)).thenReturn(null);
         new AuthenticationFilter().doFilter(request, response, chain);
-        verify(response).sendRedirect("/app/login");
+        verify(response).sendRedirect("/app/buyer/login");
         verify(chain, never()).doFilter(request, response);
     }
 
@@ -70,7 +70,7 @@ class AuthorizationAndLogoutTest {
         when(request.getContextPath()).thenReturn("/app");
         new LogoutServlet().doGet(request, response);
         verify(session).invalidate();
-        verify(response).sendRedirect("/app/login?loggedOut=1");
+        verify(response).sendRedirect("/app/buyer/login?loggedOut=1");
     }
 
     private void configurePath(String path) {

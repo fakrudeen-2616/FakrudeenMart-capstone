@@ -346,20 +346,19 @@ form small, .helper-text { color: var(--muted); font-size: .8rem; }
 @media (max-width: 48rem) { .clear-filters { grid-column: span 2; } }
 @media (max-width: 30rem) { .clear-filters { display: block; margin-bottom: .75rem; } }
 
-.home-search { margin-top: 1.5rem; }
-.home-search form { display: grid; grid-template-columns: 1fr auto; gap: .65rem; max-width: 54rem; }
-.home-search input { border-radius: .55rem 0 0 .55rem; }
-.home-search button { border-radius: 0 .55rem .55rem 0; margin: 0; }
-.home-section { padding: 3.5rem 0 1rem; }
-.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
-.section-heading h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); letter-spacing: -.035em; margin: .35rem 0 0; }
-.category-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .85rem; }
-.category-card { background: var(--card); border: 1px solid var(--line); border-radius: .75rem; display: grid; gap: .45rem; padding: 1.2rem; transition: border-color .15s ease, transform .15s ease; }
-.category-card:hover { border-color: var(--teal); text-decoration: none; transform: translateY(-2px); }
-.category-card strong { color: var(--ink); font-size: 1rem; }
-.category-card span { color: var(--muted); font-size: .8rem; }
-.home-product-grid { margin-top: 0; }
-.sr-only { border: 0; clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
-@media (max-width: 64rem) { .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 48rem) { .section-heading { align-items: flex-start; flex-direction: column; } .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 30rem) { .home-search form { grid-template-columns: 1fr; } .home-search input, .home-search button { border-radius: .5rem; } .category-grid { grid-template-columns: 1fr; } }
+/* Role separation */
+.buyer-shell { max-width: 84rem; margin: 0 auto; padding: 0 2rem 4rem; }
+.buyer-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, .55fr); gap: 2rem; align-items: end; padding: 5rem 0 3rem; }
+.buyer-hero h1 { max-width: 12ch; margin: .35rem 0 1rem; font-size: clamp(2.8rem, 7vw, 5.8rem); line-height: .95; letter-spacing: -.07em; }
+.buyer-hero p { max-width: 42rem; color: var(--muted); font-size: 1.1rem; }
+.buyer-module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.buyer-module-grid article { min-height: 14rem; padding: 1.4rem; background: var(--card); border: 1px solid var(--line); border-radius: 1.1rem; }
+.buyer-module-grid article p { color: var(--muted); }
+.buyer-account-card { max-width: 42rem; padding: 2rem; background: var(--card); border: 1px solid var(--line); border-radius: 1.1rem; }
+.read-only-value { margin: 0 0 .6rem; padding: .8rem 1rem; background: var(--surface); border-radius: .6rem; color: var(--muted); }
+.role-auth-BUYER .auth-card { border-top: .35rem solid var(--teal); }
+.role-auth-SELLER .auth-card { border-top: .35rem solid #c2410c; }
+.role-auth-ADMIN .auth-card { border-top: .35rem solid var(--ink); }
+.hero-panel-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.2rem; }
+.hero-panel-actions a { color: var(--teal-dark); font-weight: 700; }
+@media (max-width: 760px) { .buyer-shell { padding: 0 1rem 3rem; } .buyer-hero { grid-template-columns: 1fr; padding-top: 3rem; } .buyer-module-grid { grid-template-columns: 1fr; } }
