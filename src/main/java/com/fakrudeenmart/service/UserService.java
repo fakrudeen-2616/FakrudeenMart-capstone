@@ -82,6 +82,20 @@ public class UserService {
         return userDAO.findById(user.getId()).orElse(user);
     }
 
+    /** Backward-compatible profile update used by SellerService; role ownership is checked here. */
+    public User updateProfile(Long userId, String fullName, String phone) {
+        User user = findById(userId).orElseThrow(() -> new IllegalArgumentException("User account was not found."));
+        if (user.getStatus() != UserStatus.ACTIVE
+                || (user.getRole() != UserRole.BUYER && user.getRole() != UserRole.SELLER)) {
+            throw new IllegalArgumentException("Only active buyer or seller accounts can update this profile.");
+        }
+        validateProfile(fullName, phone);
+        user.setFullName(fullName.trim());
+        user.setPhone(phone == null || phone.isBlank() ? null : phone.trim());
+        userDAO.updateProfile(user.getId(), user.getFullName(), user.getPhone());
+        return userDAO.findById(user.getId()).orElse(user);
+    }
+
     public void changeAccountStatus(Long userId, UserStatus status) {
         if (userId == null || status == null) throw new IllegalArgumentException("User id and account status are required.");
         userDAO.updateStatus(userId, status);
