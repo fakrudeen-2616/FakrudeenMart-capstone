@@ -108,6 +108,19 @@ public class UserDAO {
         }
     }
 
+    public void updateProfile(Long userId, String fullName, String phone) {
+        String sql = "UPDATE users SET full_name = ?, phone = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, fullName);
+            statement.setString(2, phone);
+            statement.setLong(3, userId);
+            if (statement.executeUpdate() != 1) throw new DataAccessException("User was not found", null);
+        } catch (SQLException exception) {
+            LOGGER.error("Unable to update user profile", exception);
+            throw new DataAccessException("Unable to update user profile", exception);
+        }
+    }
+
     private User map(ResultSet result) throws SQLException {
         User user = new User();
         user.setId(result.getLong("id"));

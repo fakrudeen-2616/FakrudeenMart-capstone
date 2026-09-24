@@ -6,6 +6,7 @@ public class SellerStats {
     private int totalProducts;
     private int activeProducts;
     private int outOfStockProducts;
+    private int lowStockProducts;
     private int totalOrders;
     private int pendingOrders;
     private int processingOrders;
@@ -18,6 +19,8 @@ public class SellerStats {
     public void setActiveProducts(int value) { activeProducts = value; }
     public int getOutOfStockProducts() { return outOfStockProducts; }
     public void setOutOfStockProducts(int value) { outOfStockProducts = value; }
+    public int getLowStockProducts() { return lowStockProducts; }
+    public void setLowStockProducts(int value) { lowStockProducts = value; }
     public int getTotalOrders() { return totalOrders; }
     public void setTotalOrders(int value) { totalOrders = value; }
     public int getPendingOrders() { return pendingOrders; }

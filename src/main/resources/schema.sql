@@ -134,8 +134,8 @@ MERGE INTO categories (name, description) KEY(name) VALUES
 ('Grocery', 'Thoughtful pantry staples and everyday essentials');
 
 MERGE INTO users (full_name, email, password_hash, role, status) KEY(email) VALUES
-('Northstar Store', 'catalog-seller-1@fakrudeenmart.local', 'CATALOG_SEED_HASH', 'SELLER', 'ACTIVE'),
-('Cedar & Co.', 'catalog-seller-2@fakrudeenmart.local', 'CATALOG_SEED_HASH', 'SELLER', 'ACTIVE');
+('Northstar Store', 'catalog-seller-1@fakrudeenmart.local', '$2a$12$WfJECaKs/FgItcLAUemOaOnlTaXzrWrIx7kvx2znPaXvH0hbzWCaC', 'SELLER', 'ACTIVE'),
+('Cedar & Co.', 'catalog-seller-2@fakrudeenmart.local', '$2a$12$WfJECaKs/FgItcLAUemOaOnlTaXzrWrIx7kvx2znPaXvH0hbzWCaC', 'SELLER', 'ACTIVE');
 
 INSERT INTO products (seller_id, category_id, name, description, price, stock_quantity, image_url, active, status, created_at, updated_at)
 SELECT u.id, c.id, v.name, v.description, v.price, v.stock_quantity, v.image_url, v.active, v.status, CURRENT_TIMESTAMP - v.age_days * INTERVAL '1' DAY, CURRENT_TIMESTAMP

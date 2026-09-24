@@ -62,6 +62,18 @@ public class UserService {
         return id == null ? Optional.empty() : userDAO.findById(id);
     }
 
+    public User updateProfile(Long userId, String fullName, String phone) {
+        if (userId == null || userId <= 0) throw new IllegalArgumentException("User id is required.");
+        if (fullName == null || fullName.isBlank() || fullName.trim().length() > 120) {
+            throw new IllegalArgumentException("Full name is required and must be at most 120 characters.");
+        }
+        if (phone != null && !phone.isBlank() && !PHONE_PATTERN.matcher(phone.trim()).matches()) {
+            throw new IllegalArgumentException("Invalid phone number.");
+        }
+        userDAO.updateProfile(userId, fullName.trim(), phone == null ? "" : phone.trim());
+        return findById(userId).orElseThrow(() -> new IllegalArgumentException("User was not found."));
+    }
+
     public void changeAccountStatus(Long userId, UserStatus status) {
         if (userId == null || status == null) {
             throw new IllegalArgumentException("User id and account status are required.");

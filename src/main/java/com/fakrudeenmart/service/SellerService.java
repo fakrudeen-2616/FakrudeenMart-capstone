@@ -61,6 +61,18 @@ public class SellerService {
 
     public User getSellerProfile(Long sellerId) { return assertSeller(sellerId); }
 
+    public User updateSellerProfile(Long sellerId, String fullName, String phone) {
+        User seller = assertSeller(sellerId);
+        if (fullName == null || fullName.trim().isEmpty() || fullName.trim().length() > 120) {
+            throw new SellerException("Name is required and must be at most 120 characters.");
+        }
+        if (phone != null && !phone.isBlank() && !phone.matches("^[0-9+()\\-\\s]{7,30}$")) {
+            throw new SellerException("Invalid phone number.");
+        }
+        userService.updateProfile(seller.getId(), fullName.trim(), phone == null ? "" : phone.trim());
+        return userService.findById(seller.getId()).orElseThrow(() -> new SellerException("Seller was not found."));
+    }
+
     private Product ownedProduct(Long sellerId, Long productId) { if (productId == null || productId <= 0) throw new SellerException("Product was not found."); return sellerDAO.findProductByIdAndSellerId(productId, sellerId).orElseThrow(() -> new SellerException("Product was not found.")); }
     private Product validatedProduct(Long sellerId, Long categoryId, String name, String description, BigDecimal price, int stock, String imageUrl, ProductStatus status) {
         if (name == null || name.trim().isEmpty() || name.trim().length() > 160) throw new SellerException("Product name is required and must be at most 160 characters.");
@@ -72,6 +84,13 @@ public class SellerService {
         ProductStatus safeStatus = status == null ? ProductStatus.ACTIVE : status;
         return new Product(sellerId, categoryId, name.trim(), description.trim(), price, stock, imageUrl == null ? "" : imageUrl.trim(), safeStatus);
     }
-    private boolean allowed(OrderStatus from, OrderStatus to) { return (from == OrderStatus.PENDING && to == OrderStatus.CONFIRMED) || (from == OrderStatus.CONFIRMED && to == OrderStatus.PROCESSING) || (from == OrderStatus.PROCESSING && to == OrderStatus.SHIPPED) || (from == OrderStatus.SHIPPED && to == OrderStatus.DELIVERED); }
+    private boolean allowed(OrderStatus from, OrderStatus to) {
+        if (from == null || to == null || from == OrderStatus.CANCELLED || from == OrderStatus.DELIVERED) return false;
+        if (to == OrderStatus.CANCELLED) return true;
+        return (from == OrderStatus.PENDING && to == OrderStatus.CONFIRMED)
+                || (from == OrderStatus.CONFIRMED && to == OrderStatus.PROCESSING)
+                || (from == OrderStatus.PROCESSING && to == OrderStatus.SHIPPED)
+                || (from == OrderStatus.SHIPPED && to == OrderStatus.DELIVERED);
+    }
     public static class SellerException extends RuntimeException { public SellerException(String message) { super(message); } }
 }

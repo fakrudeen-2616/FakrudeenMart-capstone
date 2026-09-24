@@ -50,11 +50,11 @@ public class SellerDAO {
 
     public SellerStats getStats(Long sellerId) {
         SellerStats stats = new SellerStats();
-        String productSql = "SELECT COUNT(*), COALESCE(SUM(CASE WHEN status = 'ACTIVE' THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN stock_quantity = 0 THEN 1 ELSE 0 END), 0) FROM products WHERE seller_id = ?";
+        String productSql = "SELECT COUNT(*), COALESCE(SUM(CASE WHEN status = 'ACTIVE' THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN stock_quantity = 0 THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN stock_quantity BETWEEN 1 AND 5 THEN 1 ELSE 0 END), 0) FROM products WHERE seller_id = ?";
         String orderSql = "SELECT COUNT(DISTINCT o.id), COALESCE(SUM(CASE WHEN o.status = 'PENDING' THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN o.status = 'PROCESSING' THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN o.status = 'SHIPPED' THEN 1 ELSE 0 END), 0), COALESCE(SUM(CASE WHEN o.status = 'DELIVERED' THEN 1 ELSE 0 END), 0) FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN products p ON p.id = oi.product_id WHERE p.seller_id = ? AND o.status <> 'CANCELLED'";
         String salesSql = "SELECT COALESCE(SUM(oi.subtotal), 0) FROM order_items oi JOIN orders o ON o.id = oi.order_id JOIN products p ON p.id = oi.product_id WHERE p.seller_id = ? AND o.status <> 'CANCELLED'";
         try (Connection c = dataSource.getConnection()) {
-            try (PreparedStatement s = c.prepareStatement(productSql)) { s.setLong(1, sellerId); try (ResultSet r = s.executeQuery()) { r.next(); stats.setTotalProducts(r.getInt(1)); stats.setActiveProducts(r.getInt(2)); stats.setOutOfStockProducts(r.getInt(3)); } }
+            try (PreparedStatement s = c.prepareStatement(productSql)) { s.setLong(1, sellerId); try (ResultSet r = s.executeQuery()) { r.next(); stats.setTotalProducts(r.getInt(1)); stats.setActiveProducts(r.getInt(2)); stats.setOutOfStockProducts(r.getInt(3)); stats.setLowStockProducts(r.getInt(4)); } }
             try (PreparedStatement s = c.prepareStatement(orderSql)) { s.setLong(1, sellerId); try (ResultSet r = s.executeQuery()) { r.next(); stats.setTotalOrders(r.getInt(1)); stats.setPendingOrders(r.getInt(2)); stats.setProcessingOrders(r.getInt(3)); stats.setShippedOrders(r.getInt(4)); stats.setDeliveredOrders(r.getInt(5)); } }
             try (PreparedStatement s = c.prepareStatement(salesSql)) { s.setLong(1, sellerId); try (ResultSet r = s.executeQuery()) { r.next(); stats.setTotalSales(r.getBigDecimal(1)); } }
             return stats;
