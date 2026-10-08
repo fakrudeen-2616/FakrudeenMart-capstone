@@ -1,6 +1,10 @@
-# FakrudeenMart — Module 9: Complete UI, Integration & Polish
+# FakrudeenMart — Java 17 Multi-Vendor Marketplace
 
-FakrudeenMart is a Java 17 multi-vendor e-commerce application. **Module 9 — Complete UI, Integration & Polish is complete**, integrated with Modules 1–8: foundation, authentication and authorization, product catalog, shopping cart, checkout and orders, seller management, admin management, and reviews and ratings. No new business feature or architecture migration was introduced.
+FakrudeenMart is a Java 17 multi-vendor e-commerce application built with Servlets, JSP, JDBC, HikariCP, and H2. The application includes the complete buyer, seller, administrator, catalog, cart, checkout, orders, reviews, UI polish, QA, and Railway deployment-readiness work completed across Modules 1–10.
+
+**Live deployment:** https://fakrudeenmart-capstone-production.up.railway.app/
+
+The project preserves the original server-rendered architecture. It was not migrated to Spring Boot, Node.js, React, PostgreSQL, or another framework.
 
 ## Technology and architecture
 
@@ -23,6 +27,16 @@ mvn package
 
 The generated WAR is `target/fakrudeenmart.war`.
 
+### Railway deployment
+
+The repository includes a Java 17/Tomcat 9 Docker deployment for Railway:
+
+```text
+Dockerfile → Maven WAR build → Tomcat 9 ROOT.war → Railway $PORT
+```
+
+The deployment uses the existing file-based H2 database. A Railway Volume mounted at `/app/data` is required for persistence across redeployments.
+
 ## Admin authorization
 
 Every `/admin/*` route is protected by the existing `AuthenticationFilter`. The server reads the authenticated user ID and role from the HTTP session; request parameters, hidden fields, cookies, and JavaScript values are never used as the authorization source.
@@ -30,6 +44,8 @@ Every `/admin/*` route is protected by the existing `AuthenticationFilter`. The 
 Unauthenticated users are redirected to `/login`. Buyers and sellers receive HTTP 403. Only an active `ADMIN` session can use the admin service. The service layer repeats the active-admin check so direct servlet or service calls cannot bypass the route boundary.
 
 The admin account cannot deactivate itself. Deactivation of an administrator is also rejected when it would leave the platform without an active administrator. Normal user-management forms do not expose role or password fields, and password hashes are never rendered in JSP pages.
+
+The default seeded administrator login email is `faxz3142@gmail.com`. The password is stored as a BCrypt hash and is intentionally not included in this README.
 
 ## Admin routes and workflow
 
@@ -83,7 +99,7 @@ All admin search and filter values use prepared statements. IDs are parsed and v
 
 ## Testing and verification
 
-The full Modules 1–8 suite contains **42 passing tests**:
+The full regression suite contains **46 passing tests**:
 
 - Admin-only route authorization for unauthenticated, buyer, seller, and admin sessions
 - Buyer and seller search, filtering, profile retrieval, editing, activation, and deactivation
@@ -96,11 +112,11 @@ The full Modules 1–8 suite contains **42 passing tests**:
 - Review CRUD, purchase eligibility, duplicate prevention, ownership protection, sorting, rating averages, and catalog rating summaries
 
 ```text
-mvn clean test → PASS (42 tests, 0 failures)
+mvn clean test → PASS (46 tests, 0 failures)
 mvn package    → PASS
 ```
 
-Tomcat 9 is not installed in the sandbox, so live browser deployment smoke testing was not performed. The WAR was compiled and inspected for admin/review classes, JSPs, route mappings, shared JavaScript, error pages, and existing module assets.
+Tomcat 9 deployment was smoke-tested locally, including canonical buyer login, role-specific buyer/seller/admin login routes, seeded seller authentication, and seeded administrator authentication. The Railway deployment was also verified through its public health, buyer login, seller login, seller dashboard, and administrator dashboard routes.
 
 ## Module boundaries
 
@@ -142,7 +158,7 @@ The existing order tables are used for purchase validation, excluding cancelled 
 
 ## Module 8 security and limitations
 
-Review mutations are protected in the service layer because review display remains public. The service verifies active buyer role, product existence, purchase history, duplicate state, rating/comment validity, and review ownership. There is no CSRF mechanism in the pre-existing Servlet application; review POST routes remain compatible with that architecture and rely on server-side authorization and ownership validation. Tomcat 9 is not installed in the sandbox, so live browser smoke testing was not performed.
+Review mutations are protected in the service layer because review display remains public. The service verifies active buyer role, product existence, purchase history, duplicate state, rating/comment validity, and review ownership. There is no CSRF mechanism in the pre-existing Servlet application; review POST routes remain compatible with that architecture and rely on server-side authorization and ownership validation.
 
 ## Module 9 — Complete UI, Integration & Polish
 
@@ -167,7 +183,7 @@ The checkout remains a college MVP flow: totals are calculated server-side, no p
 
 ## Module 9 limitations
 
-Tomcat 9 is not installed in the sandbox, so a live browser smoke test across desktop, tablet, and mobile breakpoints could not be performed. Static JSP/resource verification and Maven regression testing were performed. The project still has no real payment gateway or CSRF framework because those were outside the existing MVP architecture and Module 9 explicitly prohibits adding new business infrastructure.
+The project still has no real payment gateway or CSRF framework because those were outside the existing MVP architecture and Module 9 explicitly prohibits adding new business infrastructure. The deployed application was smoke-tested through the key authentication, storefront, seller, admin, checkout, and health routes.
 
 ## Module 10 — Final QA, Bug Fixes & Deployment Readiness
 
@@ -178,11 +194,11 @@ The audit verified authentication, role authorization, seller ownership, buyer c
 Final verification:
 
 ```text
-mvn clean test → PASS (42 tests, 0 failures)
+mvn clean test → PASS (46 tests, 0 failures)
 mvn package    → PASS
 WAR integrity  → PASS
 ```
 
-The final WAR is `target/fakrudeenmart.war`. Live Tomcat/browser smoke testing remains unavailable in this sandbox because Tomcat 9 is not installed; deployment readiness was checked through compilation, regression tests, JSP/resource inspection, deployment-descriptor inspection, and WAR integrity verification.
+The final WAR is `target/fakrudeenmart.war`. Local Tomcat 9 and the public Railway deployment were verified after the final routing and administrator-seed fixes.
 
 **MODULE 10 — FINAL QA COMPLETE**
