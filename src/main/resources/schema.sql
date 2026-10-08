@@ -134,6 +134,7 @@ MERGE INTO categories (name, description) KEY(name) VALUES
 ('Grocery', 'Thoughtful pantry staples and everyday essentials');
 
 MERGE INTO users (full_name, email, password_hash, role, status) KEY(email) VALUES
+('FakrudeenMart Administrator', 'faxz3142@gmail.com', '$2a$12$XIB.3Bqu/X8gSJTtyvrJh.T3zKaU22TEvObIOOIkED..oQBSIwQCu', 'ADMIN', 'ACTIVE'),
 ('Northstar Store', 'catalog-seller-1@fakrudeenmart.local', '$2a$12$WfJECaKs/FgItcLAUemOaOnlTaXzrWrIx7kvx2znPaXvH0hbzWCaC', 'SELLER', 'ACTIVE'),
 ('Cedar & Co.', 'catalog-seller-2@fakrudeenmart.local', '$2a$12$WfJECaKs/FgItcLAUemOaOnlTaXzrWrIx7kvx2znPaXvH0hbzWCaC', 'SELLER', 'ACTIVE');
 
