@@ -20,6 +20,9 @@ public class RoleLoginServlet extends HttpServlet {
     private UserService userService;
     private UserRole role;
 
+    public RoleLoginServlet() {
+    }
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
